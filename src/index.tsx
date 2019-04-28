@@ -8,6 +8,7 @@ import Home from './components/home';
 //import WlQuestions from './components/wl_questions';
 
 //declare var alt: any;
+const preview = require('./img/preview.png');
 
 if(process.env.NODE_ENV !== 'development') {
 	/*try {
@@ -38,8 +39,8 @@ if(process.env.NODE_ENV !== 'development') {
 else {
 	let body = document.body;
 	if(body) {
-		body.style['backgroundColor'] = process.env.NODE_ENV !== 'development' ? 
-			'transparent' : '#006064';
+		body.style['background'] = process.env.NODE_ENV !== 'development' ? 
+			'transparent' : `url('${preview}') center no-repeat`;
 	}
 }
 

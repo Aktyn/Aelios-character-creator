@@ -1,0 +1,83 @@
+.creator-main {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	// background-color: #004D40a0;
+
+	display: inline-grid;
+	grid-template-areas: "options navigation";
+	grid-template-columns: auto fit-content(100%);
+	//grid-column-gap: 20px;
+
+	& > nav {
+		grid-area: navigation;
+		white-space: nowrap;
+		box-shadow: 0px 2px 6px #0008;
+		margin: 10px;
+		
+		button {
+			display: block;
+			width: 100%;
+			
+			margin: 0px;
+			border-radius: 0px;
+			box-shadow: none;
+
+			$borderparam: 2px solid #009688;
+
+			border-left: $borderparam;
+			border-right: $borderparam;
+			&:first-child {
+				border-top: $borderparam;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+			&:last-child {
+				border-bottom: $borderparam;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+
+			background-color: #00241eb3;
+
+			transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+			&.current {
+				background-color: #902909b3;
+				border-color: #FF5722;
+			}
+
+			&:not(.current):hover {
+				background-color: #00695C;
+			}
+
+			&:not(:last-child) {
+				border-bottom: 1px solid #009688;
+			}
+		}
+	}
+
+	& > .options {
+		grid-area: options;
+		margin: 10px;
+		background-color: #00241eb3;
+		border: 1px solid #009688;
+		border-top-width: 2px;
+		border-radius: 5px;
+		// border-bottom-width: 2px;
+		box-shadow: 0px 2px 6px #0008;
+		padding: 10px;
+
+		min-width: 200px;
+
+		hr {
+			background-color: #00695C;
+		}
+
+		input, label {
+			display: block;
+			margin: 5px 0px;
+		}
+	}
+}
