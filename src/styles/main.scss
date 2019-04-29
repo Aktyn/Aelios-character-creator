@@ -3,6 +3,11 @@
 	src: url('./Asap-Regular.ttf');
 }
 
+@font-face {
+	font-family: Roboto;
+	src: url('./Roboto-Regular.ttf');
+}
+
 @import 'common.scss';
 
 body, html, textarea, select, input, button, input::placeholder {
@@ -12,7 +17,7 @@ body, html, textarea, select, input, button, input::placeholder {
     border: none;
     outline: none;
     color: #fff;
-    font-family: Asap, Arial;
+    font-family: Roboto, Asap, Arial;
     font-size: 0.975em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

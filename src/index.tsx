@@ -1,21 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
-//import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './styles/main.scss';
 
 import Home from './components/home';
-//import WlQuestions from './components/wl_questions';
 
-//declare var alt: any;
+declare var alt: any;
 const preview = require('./img/preview.png');
 
 if(process.env.NODE_ENV !== 'development') {
-	/*try {
+	try {
 		window.addEventListener('load', function() {
 			console.log('view loaded');
 			try {
-				alt.emit('viewLoaded');
+				alt.emit('CC_viewLoaded');
 			}
 			catch(e) {
 				console.error(e);
@@ -34,7 +32,7 @@ if(process.env.NODE_ENV !== 'development') {
 	}
 	catch(e) {
 		console.error(e);
-	}*/
+	}
 }
 else {
 	let body = document.body;
