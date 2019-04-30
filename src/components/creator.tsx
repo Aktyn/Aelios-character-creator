@@ -225,29 +225,34 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
 						initialValues={this.state.face_variation} />
 
-					<VariationBox key='eyes' label={'OCZY'} onChange={(values) => {
+					<VariationBox key='eyes' label={'BIŻUTERIA'} onChange={(values) => {
 						this.setState({eyes_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_EYES]} 
 						initialValues={this.state.eyes_variation} />
 
-					<VariationBox key='head' label={'GŁOWA'} onChange={(values) => {
+					<VariationBox key='head' label={'MASKA'} onChange={(values) => {
 						this.setState({head_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HEAD]} 
 						initialValues={this.state.head_variation} />
 
-					<VariationBox key='hair' label={'WŁOSY'} onChange={(values) => {
+					<VariationBox key='hair' label={'FRYZURA'} onChange={(values) => {
 						this.setState({hair_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HAIR]} 
 						initialValues={this.state.hair_variation} />
 				</>;
 			case CATEGORIES[2]:
 				return <>
-					<VariationBox key='torso' label={'TORS'} onChange={(values) => {
+					<VariationBox key='torso' label={'RĘCE'} onChange={(values) => {
 						this.setState({torso_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_TORSO]} 
 						initialValues={this.state.torso_variation} />
 
-					<VariationBox key='torso2' label={'NIE WIEM CO TO ROBI'} onChange={(values) => {
+					<VariationBox key='accesories' label={'KOSZULKA'} onChange={(values) => {
+						this.setState({accesories_variation: values});
+					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_ACCESSORIES]} 
+						initialValues={this.state.accesories_variation} />
+
+					<VariationBox key='torso2' label={'TUŁÓW'} onChange={(values) => {
 						this.setState({torso2_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_TORSO2]} 
 						initialValues={this.state.torso2_variation} />
@@ -262,18 +267,13 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FEET]} 
 						initialValues={this.state.feet_variation} />
 
-					<VariationBox key='hands' label={'RĘCE'} onChange={(values) => {
+					<VariationBox key='hands' label={'PLECAK'} onChange={(values) => {
 						this.setState({hands_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HANDS]} 
 						initialValues={this.state.hands_variation} />
 				</>;
 			case CATEGORIES[3]:
 				return <>
-					<VariationBox key='accesories' label={'AKCESORIA'} onChange={(values) => {
-						this.setState({accesories_variation: values});
-					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_ACCESSORIES]} 
-						initialValues={this.state.accesories_variation} />
-
 					<VariationBox key='textures' label={'ZNACZKI'} onChange={(values) => {
 						this.setState({textures_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_TEXTURES]} 
