@@ -35,10 +35,12 @@ class SmallNumeric extends React.Component<SmallNumericProps, SmallNumericState>
 	}
 
 	componentWillUpdate(nothing: any, next_state: SmallNumericState) {
+		//console.log(next_state, this.state.value);
 		if(parseInt(next_state.value) < this.props.min)
 			next_state.value = this.props.max.toString();
 		else if(parseInt(next_state.value) > this.props.max)
 			next_state.value = this.props.min.toString();
+
 		if(this.state.value !== next_state.value)
 			this.props.onChange(parseInt(next_state.value));
 		//next_state.value = Math.max(this.props.min, Math.min(this.props.max, next_state.value));
@@ -52,6 +54,8 @@ class SmallNumeric extends React.Component<SmallNumericProps, SmallNumericState>
 		return <div className={`small_numeric ${this.props.disabled ? 'disabled' : ''}`}>
 			<button onClick={() => this.setState({value: (parseInt(this.state.value)-1).toString()})}></button>
 			<input type='number' value={this.state.value} onChange={e => {
+				if(e.target.value.length === 0)
+					e.target.value = this.props.min.toString();
 				this.setState({value: e.target.value});
 			}} />
 			<button onClick={() => this.setState({value: (parseInt(this.state.value)+1).toString()})}></button>

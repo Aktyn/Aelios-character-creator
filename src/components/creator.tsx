@@ -121,8 +121,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 		for(let key in this.state) {
 			//@ts-ignore
 			if(this.state[key] !== next_state[key]) {
-				//@ts-ignore
-				console.log(key, next_state[key]);
 				try {
 					//@ts-ignore
 					alt.emit('characterPropertyChanged', key, next_state[key]);
@@ -225,7 +223,7 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
 						initialValues={this.state.face_variation} />
 
-					<VariationBox key='eyes' label={'BIŻUTERIA'} onChange={(values) => {
+					<VariationBox key='eyes' label={'AKCESORIA'} onChange={(values) => {
 						this.setState({eyes_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_EYES]} 
 						initialValues={this.state.eyes_variation} />
