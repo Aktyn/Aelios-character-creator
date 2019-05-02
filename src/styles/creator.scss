@@ -71,6 +71,8 @@
 		// border-bottom-width: 2px;
 		box-shadow: 0px 2px 6px #0008;
 		padding: 10px;
+		max-height: 95vh;
+		overflow-y: auto;
 
 		min-width: 250px;
 
@@ -95,7 +97,7 @@
 				}
 			}
 
-			@for $i from 2 through 8 {
+			@for $i from 2 through 10 {
 				&:nth-child(#{$i}) {
 					animation-delay: ($i - 1) * 0.05s;
 				}
@@ -273,16 +275,22 @@
 	}
 
 	.two-columns {
-		display: inline-grid !important;
-		grid-template-columns: fit-content(100%) auto;
+		display: grid !important;
+		width: 242px;
+		align-items: center;
+		// justify-content: stretch;
+		// justify-items: stretch;
+		grid-template-columns: auto fit-content(100%);
+		grid-template-rows: min-content;
 		grid-column-gap: 5px;
 		grid-row-gap: 5px;
 
-		& > *:first-child {
-			justify-self: right;
+		& > *:nth-child(odd) {
+			text-align: right;
+			width: max-content;
 		}
-		& > *:last-child {
-			justify-self: left;
+		& > *:nth-child(even){
+			// justify-self: left;
 		}
 		& > * {
 			margin: 0px;

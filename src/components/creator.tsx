@@ -1,6 +1,7 @@
 import React from 'react';
 import VariationBox, {VariationBoxValues} from './variation_box';
-import Slider from './slider';
+import HeadOverlay, {HeadOverlayValues} from './head_overlay';
+import Numeric from './numeric';
 
 import '../styles/creator.scss';
 
@@ -9,9 +10,11 @@ declare var alt: any;
 const CATEGORIES = [
 	'Ogólne', 
 	'Głowa',
+	'Kształt głowy',
 	'Twarz',
+	'Makijaż',
 	'Ubiór',
-	'Inne'
+	//'Inne'
 ];
 
 //PED COMPONENTS
@@ -28,29 +31,24 @@ const PED_VARIATION_ACCESSORIES = 8;
 const PED_VARIATION_TEXTURES = 10;
 const PED_VARIATION_TORSO2 = 11;
 
-//FACE FEATURES
-// const NOSE_WIDTH = 0;
-// const NOSE_PEAK_HIGHT = 0;
-// const NOSE_PEAK_LENGHT = 0;
-// const NOSE_BONE_HIGH = 0;
-// const NOSE_PEAK_LOWERING = 0;
-// const NOSE_BONE_TWIST = 0;
-// const EYEBROWN_HIGH = 0;
-// const EYEBROWN_FORWARD = 0;
-// const CHEEKS_BONE_HIGH = 0;
-// const CHEEKS_BONE_WIDTH = 0;
-// const CHEEKS_WIDTH = 0;
-// const EYES_OPENNING = 0;
-// const LIPS_THICKNESS = 0;
-// const JAW_BONE_WIDTH = 0; //Bone size to sides
-// const JAW_BONE_BACK_LENGHT = 0; //Bone size to back
-// const CHIMP_BONE_LOWERING = 0; //Go Down
-// const CHIMP_BONE_LENGHT = 0; //Go forward
-// const CHIMP_BONE_WIDTH = 0;
-// const CHIMP_HOLE = 0;
-// const NECK_THIKNESS = 0;
+//head overlays
+const HEAD_OVERLAYS = {
+	'Blemishes': 23,
+	'Facial Hair': 28,
+	'Eyebrows': 33,
+	'Ageing': 14,
+	'Makeup': 74,
+	'Blush': 6,
+	'Complexion': 11,
+	'Sun Damage': 10,
+	'Lipstick': 9,
+	'Moles/Freckles': 17,
+	'Chest Hair': 16,
+	'Body Blemishes': 11,
+	'Add Body Blemishes': 1,
+};
 
-const PED_VARIATIONS_DATA = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,4,4,1,4,4,4,4,3,1,1,3,3,1,16,4,9,2,2,2,2,2,2,2,2,2,2,1,5,5,1,1,1,1,3,1,1,1,1,2,2,2,2,1,1,1,1,4,4,26,10,10,11,9,11,2,9,22,10,1,3,3,3,3,3,3,3,3,3,3,3,3,3,1,3,3,3,6,2,3,3,3,3,4,1,3,3,3,3,5,8,11,6,6,6,8,4,6,1,6,6,16,3,26,26,24,26,24,24,12,26,26,26,22,26,26,26,21,26,25,1,1,3,12,24,26,18,4,16,18,19,4,26,17,20,14,16,8,12,12,12,12,12,1,1,1,17,1],[1,6,6,5,6,6,5,6,6,6,7,7,6,6,6,7,5,5,6,5,5,5,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,1,5,5,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,10,10,10,10,10,10,10,10,10,10,10,10,10,12,16,1,1,1,2,2,2,2,1,1,2,2,2,2,2,1,1,2,2,2,2,2,1,1,2,1,2,2,2,2,1,1,2,1,2,2,2,2,1,1,2,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,12,18,12,1],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,12,12,2,5,3,1,3,13,13,13,1,16,1,1,5,4,1,1,1,1,4,7,4,4,4,4,1,5,5,4,1,7,2,2,5,5,4,1,4,1,6,8,4,3,16,10,12,12,4,3,11,14,10,12,10,18,4,6,6,3,3,3,4,11,8,3,8,3,10,4,11,16,3,24,24,24,26,10,14,20,1,26,12,2,26,26,21,7,14,2,8,12,16,18,18,1,12,20,16,12,18,12,1,1,1,14],[1,1,1,1,1,1,1,1,1,1,26,26,26,26,26,26,26,26,26,1,1,26,26,26,26,26,26,26,26,26,1,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1,1,1,26,26,5,10,10,10,10,10,10,10,10,10,10,1,1,26,26,5,26,1,10,2,2,2,2,2,2,2,2,2,2,2],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,12,1,3,12,12,10,16,3,1,1,1,1,1,3,1,1,5,8,1,1,2,4,5,5,1,12,12,8,8,11,11,10,12,2,2,6,6,2,6,6,3,3,11,2,12,3,26,8,8,8,8,14,7,7,26,12,26,26,26,26,26,9,2,26,26,26,14,2,2,3,3,20,8,16,16,18,12,1,1],[1,6,6,6,6,6,6,6,6,6,4,4,3,6,4,5,1,4,4,1,16,3,16,3,1,1,16,3,16,2,2,1,2,2,2,2,2,2,1,2,2,2,2,1,1,1,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,6,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,3,1,1,2,10,3,2,2,2,2,2,2,1,1,1,1,1,1,1],[16,16,1,1,16,16,1,1,1,1,1,16,16,16,1,16,7,12,4,4,3,3,5,13,6,16,3,3,9,5,4,2,1,2,1,1,2,1,16,16,10,10,4,4,2,20,20,8,1,1,20,2,2,8,1,8,1,3,3,3,3,4,4,4,5,1,6,6,12,3,3,3,3,3,3,3,8,8,6,6,6,6,16,16,16,16,26,7,26,7,26,7,3,3,3,3,3,3,3,3,3,2,24,24,18,11,17,17,17,17,17,17,17,17,17,17,17,17,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,1,1,1,1,1,1,14,12,12,26,1,26,5,5,5,5,5,1,1,20,21,21,21,21,21,21,21,21,21,21,21,21,2,12,12,8,22,22,22,22,22,22,1],[1,5,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,3,3,10,10,10,10,10,10,10,10,10,10,10,10,10,5,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,4,1,1,6,8,1,1,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,11,14,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,7,1,12,4,2,6,5,3,12,11,13,6,16,16,3,7,3,9,1,12,5,6,4,1,2,1,5,5,3,4,4,1,1,2,1,1,4,4,4,1,1,9,9,4,4,4,6,6,5,12,4,1,20,1,5,16,1,3,3,4,5,1,8,4,1,12,1,7,3,3,3,1,2,2,5,5,4,4,1,1,1,1,5,11,1,6,1,6,1,8,4,1,3,16,10,12,3,3,3,3,3,3,3,3,17,17,1,12,3,10,3,1,1,1,1,3,7,7,3,3,8,15,11,3,10,6,14,14,10,12,10,12,6,16,26,8,4,6,4,3,2,2,4,4,1,3,7,6,16,3,4,4,6,6,6,8,2,1,4,4,4,4,1,7,11,4,3,6,2,6,4,4,11,13,11,11,26,26,12,26,3,3,16,16,8,8,26,3,5,26,13,5,17,17,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,15,15,26,26,26,26,16,16,2,1,14,20,12,12,1,10,10,26,12,12,26,6,6,6,26,26,10,12,26,26,2,2,26,1,26,21,7,26,16,24,15,26,26,16,16,16,16,18,18,5,5,16,8,21,21,2,12,12,1,22,20,16,12,12,18,18,18,24,16,12,1,1,1,14,14,16],[],[]];
+const PED_VARIATIONS_DATA = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,4,4,1,4,4,4,4,3,1,1,3,3,1,16,4,9,2,2,2,2,2,2,2,2,2,2,1,5,5,1,1,1,1,3,1,1,1,1,2,2,2,2,1,1,1,1,4,4,26,10,10,11,9,11,2,9,22,10,1,3,3,3,3,3,3,3,3,3,3,3,3,3,1,3,3,3,6,2,3,3,3,3,4,1,3,3,3,3,5,8,11,6,6,6,8,4,6,1,6,6,16,3,26,26,24,26,24,24,12,26,26,26,22,26,26,26,21,26,25,1,1,3,12,24,26,18,4,16,18,19,4,26,17,20,14,16,8,12,12,12,12,12,1,1,1,17,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,1,5,5,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,3,10,10,10,10,10,10,10,10,10,10,10,10,10,12,16,1,1,1,2,2,2,2,1,1,2,2,2,2,2,1,1,2,2,2,2,2,1,1,2,1,2,2,2,2,1,1,2,1,2,2,2,2,1,1,2,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,12,18,12,1],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,12,12,2,5,3,1,3,13,13,13,1,16,1,1,5,4,1,1,1,1,4,7,4,4,4,4,1,5,5,4,1,7,2,2,5,5,4,1,4,1,6,8,4,3,16,10,12,12,4,3,11,14,10,12,10,18,4,6,6,3,3,3,4,11,8,3,8,3,10,4,11,16,3,24,24,24,26,10,14,20,1,26,12,2,26,26,21,7,14,2,8,12,16,18,18,1,12,20,16,12,18,12,1,1,1,14],[1,1,1,1,1,1,1,1,1,1,26,26,26,26,26,26,26,26,26,1,1,26,26,26,26,26,26,26,26,26,1,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1,1,1,26,26,5,10,10,10,10,10,10,10,10,10,10,1,1,26,26,5,26,1,10,2,2,2,2,2,2,2,2,2,2,2],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,12,1,3,12,12,10,16,3,1,1,1,1,1,3,1,1,5,8,1,1,2,4,5,5,1,12,12,8,8,11,11,10,12,2,2,6,6,2,6,6,3,3,11,2,12,3,26,8,8,8,8,14,7,7,26,12,26,26,26,26,26,9,2,26,26,26,14,2,2,3,3,20,8,16,16,18,12,1,1],[1,6,6,6,6,6,6,6,6,6,4,4,3,6,4,5,1,4,4,1,16,3,16,3,1,1,16,3,16,2,2,1,2,2,2,2,2,2,1,2,2,2,2,1,1,1,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,6,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,3,1,1,2,10,3,2,2,2,2,2,2,1,1,1,1,1,1,1],[16,16,1,1,16,16,1,1,1,1,1,16,16,16,1,16,7,12,4,4,3,3,5,13,6,16,3,3,9,5,4,2,1,2,1,1,2,1,16,16,10,10,4,4,2,20,20,8,1,1,20,2,2,8,1,8,1,3,3,3,3,4,4,4,5,1,6,6,12,3,3,3,3,3,3,3,8,8,6,6,6,6,16,16,16,16,26,7,26,7,26,7,3,3,3,3,3,3,3,3,3,2,24,24,18,11,17,17,17,17,17,17,17,17,17,17,17,17,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,1,1,1,1,1,1,14,12,12,26,1,26,5,5,5,5,5,1,1,20,21,21,21,21,21,21,21,21,21,21,21,21,2,12,12,8,22,22,22,22,22,22,1],[1,5,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,3,3,10,10,10,10,10,10,10,10,10,10,10,10,10,5,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,4,1,1,6,8,1,1,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,11,14,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,7,1,12,4,2,6,5,3,12,11,13,6,16,16,3,7,3,9,1,12,5,6,4,1,2,1,5,5,3,4,4,1,1,2,1,1,4,4,4,1,1,9,9,4,4,4,6,6,5,12,4,1,20,1,5,16,1,3,3,4,5,1,8,4,1,12,1,7,3,3,3,1,2,2,5,5,4,4,1,1,1,1,5,11,1,6,1,6,1,8,4,1,3,16,10,12,3,3,3,3,3,3,3,3,17,17,1,12,3,10,3,1,1,1,1,3,7,7,3,3,8,15,11,3,10,6,14,14,10,12,10,12,6,16,26,8,4,6,4,3,2,2,4,4,1,3,7,6,16,3,4,4,6,6,6,8,2,1,4,4,4,4,1,7,11,4,3,6,2,6,4,4,11,13,11,11,26,26,12,26,3,3,16,16,8,8,26,3,5,26,13,5,17,17,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,15,15,26,26,26,26,16,16,2,1,14,20,12,12,1,10,10,26,12,12,26,6,6,6,26,26,10,12,26,26,2,2,26,1,26,21,7,26,16,24,15,26,26,16,16,16,16,18,18,5,5,16,8,21,21,2,12,12,1,22,20,16,12,12,18,18,18,24,16,12,1,1,1,14,14,16],[],[]];
 
 interface CreatorState {
 	category: string;
@@ -80,6 +78,49 @@ interface CreatorState {
 
 	accesories_variation: VariationBoxValues;
 	textures_variation: VariationBoxValues;
+
+	//face features
+	nose_width: number;
+	nose_peak_hight: number;
+	nose_peak_lenght: number;
+	nose_bone_high: number;
+	nose_peak_lowering: number;
+	nose_bone_twist: number;
+
+	eyebrown_high: number;
+	eyebrown_forward: number;
+
+	cheeks_bone_high: number;
+	cheeks_bone_width: number;
+	cheeks_width: number;
+
+	eyes_openning: number;
+
+	lips_thickness: number;
+	jaw_bone_width: number;
+	jaw_bone_back_lenght: number;
+
+	chimp_bone_lowering: number;
+	chimp_bone_lenght: number;
+	chimp_bone_width: number;
+	chimp_hole: number;
+
+	neck_thikness: number;
+
+	//head overlay props
+	blemishes: HeadOverlayValues,
+	facial_hair: HeadOverlayValues,
+	eyebrows: HeadOverlayValues,
+	ageing: HeadOverlayValues,
+	makeup: HeadOverlayValues,
+	blush: HeadOverlayValues,
+	complexion: HeadOverlayValues,
+	sun_damage: HeadOverlayValues,
+	lipstick: HeadOverlayValues,
+	moles_freckles: HeadOverlayValues,
+	chest_hair: HeadOverlayValues,
+	body_blemishes: HeadOverlayValues,
+	add_body_blemishes: HeadOverlayValues,
 }
 
 /*function clampNumericString(str: string, min: number, max: number) {
@@ -102,7 +143,7 @@ export default class Creator extends React.Component<any, CreatorState> {
 	private confirm_timeout: number | null = null;
 
 	state: CreatorState = {
-		category: CATEGORIES[2],
+		category: CATEGORIES[3],
 
 		//general params
 		gender: 'male',
@@ -127,6 +168,43 @@ export default class Creator extends React.Component<any, CreatorState> {
 
 		accesories_variation: 	{model_id: 0, texture_id: 0},
 		textures_variation: 	{model_id: 0, texture_id: 0},
+
+		//face features
+		nose_width: 0,
+		nose_peak_hight: 0,
+		nose_peak_lenght: 0,
+		nose_bone_high: 0,
+		nose_peak_lowering: 0,
+		nose_bone_twist: 0,
+		eyebrown_high: 0,
+		eyebrown_forward: 0,
+		cheeks_bone_high: 0,
+		cheeks_bone_width: 0,
+		cheeks_width: 0,
+		eyes_openning: 0,
+		lips_thickness: 0,
+		jaw_bone_width: 0,
+		jaw_bone_back_lenght: 0,
+		chimp_bone_lowering: 0,
+		chimp_bone_lenght: 0,
+		chimp_bone_width: 0,
+		chimp_hole: 0,
+		neck_thikness: 0,
+
+		//head overlay props
+		blemishes: {index: 0, opacity: 1},
+		facial_hair: {index: 0, opacity: 1},
+		eyebrows: {index: 0, opacity: 1},
+		ageing: {index: 0, opacity: 1},
+		makeup: {index: 0, opacity: 1},
+		blush: {index: 0, opacity: 1},
+		complexion: {index: 0, opacity: 1},
+		sun_damage: {index: 0, opacity: 1},
+		lipstick: {index: 0, opacity: 1},
+		moles_freckles: {index: 0, opacity: 1},
+		chest_hair: {index: 0, opacity: 1},
+		body_blemishes: {index: 0, opacity: 1},
+		add_body_blemishes: {index: 0, opacity: 1},
 	}
 
 	constructor(props: any) {
@@ -149,7 +227,7 @@ export default class Creator extends React.Component<any, CreatorState> {
 		for(let key in this.state) {
 			//@ts-ignore
 			if(this.state[key] !== next_state[key]) {
-				///@ts-ignore
+				//@ts-ignore
 				//console.log(key, next_state[key]);
 				try {
 					//@ts-ignore
@@ -307,11 +385,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
 						initialValues={this.state.face_variation} />
 
-					<VariationBox key='eyes' label={'AKCESORIA'} onChange={(values) => {
-						this.setState({eyes_variation: values});
-					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_EYES]} 
-						initialValues={this.state.eyes_variation} />
-
 					<VariationBox key='head' label={'MASKA'} onChange={(values) => {
 						this.setState({head_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HEAD]} 
@@ -321,6 +394,11 @@ export default class Creator extends React.Component<any, CreatorState> {
 						this.setState({hair_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HAIR]} 
 						initialValues={this.state.hair_variation} />
+
+					<VariationBox key='eyes' label={'AKCESORIA'} onChange={(values) => {
+						this.setState({eyes_variation: values});
+					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_EYES]} 
+						initialValues={this.state.eyes_variation} />
 				</>;
 			case CATEGORIES[2]:
 				return <>
@@ -328,11 +406,138 @@ export default class Creator extends React.Component<any, CreatorState> {
 						<label>NOS</label>
 						<div className='two-columns'>
 							<div>Szerokość</div>
-							<Slider />
+							<Numeric key={'nose_width'} initialValue={this.state.nose_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_width: v})} />
+
+							<div>Wysokość wierzchołka</div>
+							<Numeric key={'nose_peak_hight'} initialValue={this.state.nose_peak_hight} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_hight: v})} />
+
+							<div>Długość wierzchołka</div>
+							<Numeric key={'nose_peak_lenght'} initialValue={this.state.nose_peak_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_lenght: v})} />
+
+							<div>Wysokość kości</div>
+							<Numeric key={'nose_bone_high'} initialValue={this.state.nose_bone_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_bone_high: v})} />
+
+							<div>Obniżenie szczytu</div>
+							<Numeric key={'nose_peak_lowering'} initialValue={this.state.nose_peak_lowering} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_lowering: v})} />
+
+							<div>Skręt kości</div>
+							<Numeric key={'nose_bone_twist'} initialValue={this.state.nose_bone_twist} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_bone_twist: v})} />
+						</div>
+					</div>
+
+					<div className='variation-box'>
+						<label>BRWI</label>
+						<div className='two-columns'>
+							<div>Wysokość</div>
+							<Numeric initialValue={this.state.eyebrown_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyebrown_high: v})} />
+							<div>Wychylenie do przodu</div>
+							<Numeric initialValue={this.state.eyebrown_forward} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyebrown_forward: v})} />
+						</div>
+					</div>
+
+					<div className='variation-box'>
+						<label>POLICZKI</label>
+						<div className='two-columns'>
+							<div>Wysokość kości</div>
+							<Numeric initialValue={this.state.cheeks_bone_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_bone_high: v})} />
+							<div>Szerokość kości</div>
+							<Numeric initialValue={this.state.cheeks_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_bone_width: v})} />
+							<div>Szerokość</div>
+							<Numeric initialValue={this.state.cheeks_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_width: v})} />
+						</div>
+					</div>
+
+					<div className='variation-box'>
+						<label>SZCZĘKA</label>
+						<div className='two-columns'>
+							<div>Szerokość</div>
+							<Numeric initialValue={this.state.jaw_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({jaw_bone_width: v})} />
+							<div>Wysunięcie</div>
+							<Numeric initialValue={this.state.jaw_bone_back_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({jaw_bone_back_lenght: v})} />
+						</div>
+					</div>
+
+					{<div className='variation-box'>
+						<label>PODBRÓDEK</label>
+						<div className='two-columns'>
+							<div>Obniżenie</div>
+							<Numeric initialValue={this.state.chimp_bone_lowering} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_lowering: v})} />
+							<div>Długość</div>
+							<Numeric initialValue={this.state.chimp_bone_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_lenght: v})} />
+							<div>Szerokość</div>
+							<Numeric initialValue={this.state.chimp_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_width: v})} />
+							<div>Wielkość przerwy</div>
+							<Numeric initialValue={this.state.chimp_hole} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_hole: v})} />
+						</div>
+					</div>}
+
+					<div className='variation-box'>
+						<label>INNE</label>
+						<div className='two-columns'>
+							<div>Otwartość oczu</div>
+							<Numeric initialValue={this.state.eyes_openning} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyes_openning: v})} />
+							<div>Grubość warg</div>
+							<Numeric initialValue={this.state.lips_thickness} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({lips_thickness: v})} />
+							<div>Grubość szyji</div>
+							<Numeric initialValue={this.state.neck_thikness} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({neck_thikness: v})} />
 						</div>
 					</div>
 				</>;
 			case CATEGORIES[3]:
+				return <>
+					<HeadOverlay key='blemishes' label='SKAZY' initialValues={this.state.blemishes} 
+						max_index={HEAD_OVERLAYS['Blemishes']} onChange={v => 
+							this.setState({blemishes: v})} />
+
+					<HeadOverlay key='facial_hair' label='ZAROST' initialValues={this.state.facial_hair}max_index={HEAD_OVERLAYS['Facial Hair']} onChange={v => 
+							this.setState({facial_hair: v})} />
+
+					<HeadOverlay key='eyebrows' label='BRWI' initialValues={this.state.eyebrows} 
+						max_index={HEAD_OVERLAYS['Eyebrows']} onChange={v => 
+							this.setState({eyebrows: v})} />
+
+					<HeadOverlay key='ageing' label='WIEK' initialValues={this.state.ageing} 
+						max_index={HEAD_OVERLAYS['Ageing']} onChange={v => 
+							this.setState({ageing: v})} />
+
+					<HeadOverlay key='complexion' label='CERA' initialValues={this.state.complexion} 
+						max_index={HEAD_OVERLAYS['Complexion']} onChange={v => 
+							this.setState({complexion: v})} />
+
+					<HeadOverlay key='moles_freckles' label='PIEGI' initialValues={this.state.moles_freckles} 
+						max_index={HEAD_OVERLAYS['Moles/Freckles']} onChange={v => 
+							this.setState({moles_freckles: v})} />
+
+					<HeadOverlay key='chest_hair' label='WŁOSY NA KLACIE' initialValues={this.state.chest_hair} 
+						max_index={HEAD_OVERLAYS['Chest Hair']} onChange={v => 
+							this.setState({chest_hair: v})} />
+
+					<HeadOverlay key='body_blemishes' label='SKAZY NA CIELE' initialValues={this.state.body_blemishes} 
+						max_index={HEAD_OVERLAYS['Body Blemishes']} onChange={v => 
+							this.setState({body_blemishes: v})} />
+
+					{/*<HeadOverlay key='add_body_blemishes' label='DODATKOWE SKAZY NA CIELE' initialValues={this.state.add_body_blemishes} 
+						max_index={HEAD_OVERLAYS['Add Body Blemishes']} onChange={v => 
+							this.setState({add_body_blemishes: v})} />*/}
+				</>;
+			case CATEGORIES[4]:
+				return <>
+					<HeadOverlay key='makeup' label='MAKIJAŻ' initialValues={this.state.makeup} 
+						max_index={HEAD_OVERLAYS['Makeup']} onChange={v => 
+							this.setState({makeup: v})} />
+
+					<HeadOverlay key='blush' label='RUMIENIEC' initialValues={this.state.blush} 
+						max_index={HEAD_OVERLAYS['Blush']} onChange={v => 
+							this.setState({blush: v})} />
+
+					<HeadOverlay key='lipstick' label='SZMINKA' initialValues={this.state.lipstick} 
+						max_index={HEAD_OVERLAYS['Lipstick']} onChange={v => 
+							this.setState({lipstick: v})} />
+
+					<HeadOverlay key='sun_damage' label='OPARZENIA SŁONECZNE' initialValues={this.state.sun_damage} max_index={HEAD_OVERLAYS['Sun Damage']} onChange={v => 
+							this.setState({sun_damage: v})} />
+				</>;
+			case CATEGORIES[5]:
 				return <>
 					<VariationBox key='torso' label={'RĘCE'} onChange={(values) => {
 						this.setState({torso_variation: values});
@@ -364,7 +569,7 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HANDS]} 
 						initialValues={this.state.hands_variation} />
 				</>;
-			case CATEGORIES[4]:
+			case CATEGORIES[6]:
 				return <>
 					<VariationBox key='textures' label={'ZNACZKI'} onChange={(values) => {
 						this.setState({textures_variation: values});
