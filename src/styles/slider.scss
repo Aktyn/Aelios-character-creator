@@ -1,0 +1,46 @@
+.slider-main {
+	$h: 20px;
+	$innerH: 3px;
+	$innerW: 45px;
+	min-width: 100px !important;
+	display: block;
+	width: 100%;
+	padding: 0px;
+
+	// background-color: red;
+	position: relative;
+
+	&::before {
+		content: "";
+		display: block;
+		width: 100%;
+		height: $innerH;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		bottom: 0px;
+		margin: auto;
+		background-color: #80DEEA40;
+	}
+
+	.handle {
+		height: $h;
+		width: $innerW;
+		border-radius: 5px;
+		border-bottom: 2px solid #00796B;
+		padding: 0px;
+		margin: auto;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		bottom: 0px;
+		background-color: #26A69A !important;
+		&:hover {
+			background-color: #4DB6AC !important;
+		}
+		&:active {
+			background-color: #FF8A65 !important;
+			border-color: #F4511E;
+		}
+	}
+}

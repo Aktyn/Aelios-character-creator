@@ -32,16 +32,14 @@ export default class Home extends React.Component<any, HomeState> {
 	}
 
 	componentDidMount() {
-		if(process.env.NODE_ENV === 'development') {
+		/*if(process.env.NODE_ENV === 'development') {
 			this._showChoicer(2, [{
-				birth_day: '14',
-				birth_month: '2',
-				birth_year: '1996',
+				birth_date: '14-02-1996',
 				firstname: 'Aktyn',
 				surname: 'Peonowski',
 				gender: 'male'
 			}]);
-		}
+		}*/
 	}
 
 	_showChoicer(_slots: number, _props: AppearanceSchema[]) {

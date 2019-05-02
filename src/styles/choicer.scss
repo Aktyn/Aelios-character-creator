@@ -2,18 +2,23 @@
 	$w: 200px;
 	$h: $w*1.4;
 	vertical-align: middle;
-	// align-items: center;
+	align-items: center;
 	display: inline-flex;
+
 	flex-wrap: wrap;
 	flex-direction: row;
 
 	& > * {//single card
 		display: inline-grid;
+		grid-template-rows: auto fit-content(100%) auto;
+		grid-row-gap: 10px;
 		align-items: center;
+		justify-content: center;
 
 		width: $w;
 		height: $h;
-		background-color: #B0BEC5a0;
+		//background-color: #B0BEC5a0;
+		background: linear-gradient(0deg, #B0BEC5a0 0%, #BBDEFBa0 100%);
 		box-shadow: 0px 3px 8px #0008;
 		border: 2px solid #263238;
 		border-bottom-width: 4px;
@@ -26,14 +31,27 @@
 		font-weight: bold;
 		text-shadow: none;
 
+		& > *:first-child {
+			align-self: end;
+		}
+		& > *:last-child {
+			align-self: start;
+		}
+
 		&.empty {
+			grid-template-rows: auto fit-content(100%) auto;
 			// background-color: red;
 			
-			
 		}
+		//cubic-bezier(.87,-.41,.19,1.44)
+		transition: transform 0.3s ease-in-out, 
+			background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 
 		&:hover {
 			background-color: #FFAB91a0;
+			border-color: #793925;
+
+			transform: perspective(800px) rotateX(30deg) translateY(-30px);
 		}
 	}
 }

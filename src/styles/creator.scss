@@ -95,7 +95,7 @@
 				}
 			}
 
-			@for $i from 2 through 6 {
+			@for $i from 2 through 8 {
 				&:nth-child(#{$i}) {
 					animation-delay: ($i - 1) * 0.05s;
 				}
@@ -269,6 +269,23 @@
 		}
 		&:hover > label::before, &:hover > label::after {
 			background-color: $bhcolor;
+		}
+	}
+
+	.two-columns {
+		display: inline-grid !important;
+		grid-template-columns: fit-content(100%) auto;
+		grid-column-gap: 5px;
+		grid-row-gap: 5px;
+
+		& > *:first-child {
+			justify-self: right;
+		}
+		& > *:last-child {
+			justify-self: left;
+		}
+		& > * {
+			margin: 0px;
 		}
 	}
 }
