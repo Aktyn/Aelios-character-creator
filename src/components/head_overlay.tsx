@@ -1,9 +1,12 @@
 import React from 'react';
 import SmallNumeric from './numeric';
+import Slider from './slider';
 
 export interface HeadOverlayValues {
 	index: number;
 	opacity: number;//0.0 - 1.0
+	color1?: number;//0 - 63
+	color2?: number;//0 - 63
 }
 
 interface HeadOverlayProps {
@@ -32,12 +35,17 @@ export default class HeadOverlay extends React.Component<HeadOverlayProps, HeadO
 
 		this.state.index = this.props.initialValues.index;
 		this.state.opacity = this.props.initialValues.opacity;
+		this.state.color1 = this.props.initialValues.color1;
+		this.state.color2 = this.props.initialValues.color2;
 	}
 
 	componentWillUpdate(nothing: any, next_state: HeadOverlayValues) {
 		//console.log( next_state );
-		if(this.state.index !== next_state.index || this.state.opacity !== next_state.opacity)
+		if(this.state.index !== next_state.index || this.state.opacity !== next_state.opacity ||
+			this.state.color1 !== next_state.color1 || this.state.color2 !== next_state.color2)
+		{
 			this.props.onChange(next_state);
+		}
 	}
 
 	render() {
@@ -51,10 +59,22 @@ export default class HeadOverlay extends React.Component<HeadOverlayProps, HeadO
 			</div>
 			<div>
 				<label>Widoczność</label>
-				<SmallNumeric initialValue={this.state.opacity} step={0.1} onChange={v => {
+				<Slider width={62} initialValue={this.state.opacity} onChange={v => {
 					this.setState({opacity: v});
 				}} min={0} max={1} />
 			</div>
+			{this.state.color1 !== undefined && <div>
+				<label>Kolor 1</label>
+				<SmallNumeric initialValue={this.state.color1} onChange={v => {
+					this.setState({color1: v});
+				}} min={0} max={63} />
+			</div>}
+			{this.state.color2 !== undefined && <div>
+				<label>Kolor 2</label>
+				<SmallNumeric initialValue={this.state.color2} onChange={v => {
+					this.setState({color2: v});
+				}} min={0} max={63} />
+			</div>}
 		</div>;
 	}
 }

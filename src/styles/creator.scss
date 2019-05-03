@@ -207,9 +207,19 @@
 			margin-top: 10px;
 		}
 
-		/*display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;*/
+		display: grid;
+		width: 100%;
+		grid-template-columns: auto auto;
+		justify-content: stretch;
+		justify-items: stretch;
+		& > *:nth-child(even) {
+			justify-self: right;
+		}
+		& > *:nth-child(odd) {
+			justify-self: left;
+		}
+		//flex-direction: row;
+		//flex-wrap: wrap;
 
 		&::before {
 			content: "";
@@ -245,6 +255,7 @@
 			width: 100%;
 			height: $labelH;
 			line-height: $labelH;
+			grid-column: 1 / span 2;
 			
 			grid-template-columns: 1fr auto 1fr;
 			grid-column-gap: 10px;

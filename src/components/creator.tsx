@@ -2,6 +2,7 @@ import React from 'react';
 import VariationBox, {VariationBoxValues} from './variation_box';
 import HeadOverlay, {HeadOverlayValues} from './head_overlay';
 import Numeric from './numeric';
+import Slider from './slider';
 
 import '../styles/creator.scss';
 
@@ -79,6 +80,8 @@ interface CreatorState {
 	accesories_variation: VariationBoxValues;
 	textures_variation: VariationBoxValues;
 
+	hair_color: {col1: number, col2: number};
+
 	//face features
 	nose_width: number;
 	nose_peak_hight: number;
@@ -143,15 +146,12 @@ export default class Creator extends React.Component<any, CreatorState> {
 	private confirm_timeout: number | null = null;
 
 	state: CreatorState = {
-		category: CATEGORIES[3],
+		category: CATEGORIES[0],
 
 		//general params
 		gender: 'male',
 		firstname: '',
 		surname: '',
-		//birth_day: '',
-		//birth_month: '',
-		//birth_year: '',
 		birth_date: '',
 
 		//variations
@@ -168,6 +168,8 @@ export default class Creator extends React.Component<any, CreatorState> {
 
 		accesories_variation: 	{model_id: 0, texture_id: 0},
 		textures_variation: 	{model_id: 0, texture_id: 0},
+
+		hair_color: {col1: 0, col2: 0},
 
 		//face features
 		nose_width: 0,
@@ -193,14 +195,14 @@ export default class Creator extends React.Component<any, CreatorState> {
 
 		//head overlay props
 		blemishes: {index: 0, opacity: 1},
-		facial_hair: {index: 0, opacity: 1},
-		eyebrows: {index: 0, opacity: 1},
+		facial_hair: {index: 0, opacity: 1, color1: 0, color2: 0},
+		eyebrows: {index: 0, opacity: 1, color1: 0, color2: 0},
 		ageing: {index: 0, opacity: 1},
 		makeup: {index: 0, opacity: 1},
-		blush: {index: 0, opacity: 1},
+		blush: {index: 0, opacity: 1, color1: 0, color2: 0},
 		complexion: {index: 0, opacity: 1},
 		sun_damage: {index: 0, opacity: 1},
-		lipstick: {index: 0, opacity: 1},
+		lipstick: {index: 0, opacity: 1, color1: 0, color2: 0},
 		moles_freckles: {index: 0, opacity: 1},
 		chest_hair: {index: 0, opacity: 1},
 		body_blemishes: {index: 0, opacity: 1},
@@ -275,7 +277,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 		else {
 			//apply character creation
 			//console.log(this.state);
-
 			try {
 				alt.emit('confirmCharacterCreation', this.state);
 			}
@@ -395,6 +396,28 @@ export default class Creator extends React.Component<any, CreatorState> {
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_HAIR]} 
 						initialValues={this.state.hair_variation} />
 
+					<div key='hair-color' className='variation-box'>
+						<label>KOLOR WŁOSÓW</label>
+						<div>
+							<label>Główny</label>
+							<Numeric min={0} max={63} onChange={v => {
+								this.setState({hair_color: {
+									col1: v,
+									col2: this.state.hair_color.col2
+								}});
+							}} initialValue={this.state.hair_color.col1} />
+						</div>
+						<div>
+							<label>Drugorzędny</label>
+							<Numeric min={0} max={63} onChange={v => {
+								this.setState({hair_color: {
+									col1: this.state.hair_color.col1,
+									col2: v
+								}});
+							}} initialValue={this.state.hair_color.col2} />
+						</div>
+					</div>
+
 					<VariationBox key='eyes' label={'AKCESORIA'} onChange={(values) => {
 						this.setState({eyes_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_EYES]} 
@@ -402,84 +425,84 @@ export default class Creator extends React.Component<any, CreatorState> {
 				</>;
 			case CATEGORIES[2]:
 				return <>
-					<div className='variation-box'>
+					<div className='variation-box' key='nose'>
 						<label>NOS</label>
 						<div className='two-columns'>
 							<div>Szerokość</div>
-							<Numeric key={'nose_width'} initialValue={this.state.nose_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_width: v})} />
+							<Slider key={'nose_width'} initialValue={this.state.nose_width} min={-1} max={1} onChange={v => this.setState({nose_width: v})} />
 
 							<div>Wysokość wierzchołka</div>
-							<Numeric key={'nose_peak_hight'} initialValue={this.state.nose_peak_hight} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_hight: v})} />
+							<Slider key={'nose_peak_hight'} initialValue={this.state.nose_peak_hight} min={-1} max={1} onChange={v => this.setState({nose_peak_hight: v})} />
 
 							<div>Długość wierzchołka</div>
-							<Numeric key={'nose_peak_lenght'} initialValue={this.state.nose_peak_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_lenght: v})} />
+							<Slider key={'nose_peak_lenght'} initialValue={this.state.nose_peak_lenght} min={-1} max={1} onChange={v => this.setState({nose_peak_lenght: v})} />
 
 							<div>Wysokość kości</div>
-							<Numeric key={'nose_bone_high'} initialValue={this.state.nose_bone_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_bone_high: v})} />
+							<Slider key={'nose_bone_high'} initialValue={this.state.nose_bone_high} min={-1} max={1} onChange={v => this.setState({nose_bone_high: v})} />
 
 							<div>Obniżenie szczytu</div>
-							<Numeric key={'nose_peak_lowering'} initialValue={this.state.nose_peak_lowering} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_peak_lowering: v})} />
+							<Slider key={'nose_peak_lowering'} initialValue={this.state.nose_peak_lowering} min={-1} max={1} onChange={v => this.setState({nose_peak_lowering: v})} />
 
 							<div>Skręt kości</div>
-							<Numeric key={'nose_bone_twist'} initialValue={this.state.nose_bone_twist} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({nose_bone_twist: v})} />
+							<Slider key={'nose_bone_twist'} initialValue={this.state.nose_bone_twist} min={-1} max={1} onChange={v => this.setState({nose_bone_twist: v})} />
 						</div>
 					</div>
 
-					<div className='variation-box'>
+					<div className='variation-box' key='eyebrows'>
 						<label>BRWI</label>
 						<div className='two-columns'>
 							<div>Wysokość</div>
-							<Numeric initialValue={this.state.eyebrown_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyebrown_high: v})} />
+							<Slider initialValue={this.state.eyebrown_high} min={-1} max={1} onChange={v => this.setState({eyebrown_high: v})} />
 							<div>Wychylenie do przodu</div>
-							<Numeric initialValue={this.state.eyebrown_forward} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyebrown_forward: v})} />
+							<Slider initialValue={this.state.eyebrown_forward} min={-1} max={1} onChange={v => this.setState({eyebrown_forward: v})} />
 						</div>
 					</div>
 
-					<div className='variation-box'>
+					<div className='variation-box' key='cheeks'>
 						<label>POLICZKI</label>
 						<div className='two-columns'>
 							<div>Wysokość kości</div>
-							<Numeric initialValue={this.state.cheeks_bone_high} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_bone_high: v})} />
+							<Slider initialValue={this.state.cheeks_bone_high} min={-1} max={1} onChange={v => this.setState({cheeks_bone_high: v})} />
 							<div>Szerokość kości</div>
-							<Numeric initialValue={this.state.cheeks_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_bone_width: v})} />
+							<Slider initialValue={this.state.cheeks_bone_width} min={-1} max={1} onChange={v => this.setState({cheeks_bone_width: v})} />
 							<div>Szerokość</div>
-							<Numeric initialValue={this.state.cheeks_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({cheeks_width: v})} />
+							<Slider initialValue={this.state.cheeks_width} min={-1} max={1} onChange={v => this.setState({cheeks_width: v})} />
 						</div>
 					</div>
 
-					<div className='variation-box'>
+					<div className='variation-box' key='jaw'>
 						<label>SZCZĘKA</label>
 						<div className='two-columns'>
 							<div>Szerokość</div>
-							<Numeric initialValue={this.state.jaw_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({jaw_bone_width: v})} />
+							<Slider initialValue={this.state.jaw_bone_width} min={-1} max={1} onChange={v => this.setState({jaw_bone_width: v})} />
 							<div>Wysunięcie</div>
-							<Numeric initialValue={this.state.jaw_bone_back_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({jaw_bone_back_lenght: v})} />
+							<Slider initialValue={this.state.jaw_bone_back_lenght} min={-1} max={1} onChange={v => this.setState({jaw_bone_back_lenght: v})} />
 						</div>
 					</div>
 
-					{<div className='variation-box'>
+					<div className='variation-box' key='chimp_bones'>
 						<label>PODBRÓDEK</label>
 						<div className='two-columns'>
 							<div>Obniżenie</div>
-							<Numeric initialValue={this.state.chimp_bone_lowering} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_lowering: v})} />
+							<Slider initialValue={this.state.chimp_bone_lowering} min={-1} max={1} onChange={v => this.setState({chimp_bone_lowering: v})} />
 							<div>Długość</div>
-							<Numeric initialValue={this.state.chimp_bone_lenght} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_lenght: v})} />
+							<Slider initialValue={this.state.chimp_bone_lenght} min={-1} max={1} onChange={v => this.setState({chimp_bone_lenght: v})} />
 							<div>Szerokość</div>
-							<Numeric initialValue={this.state.chimp_bone_width} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_bone_width: v})} />
+							<Slider initialValue={this.state.chimp_bone_width} min={-1} max={1} onChange={v => this.setState({chimp_bone_width: v})} />
 							<div>Wielkość przerwy</div>
-							<Numeric initialValue={this.state.chimp_hole} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({chimp_hole: v})} />
+							<Slider initialValue={this.state.chimp_hole} min={-1} max={1} onChange={v => this.setState({chimp_hole: v})} />
 						</div>
-					</div>}
+					</div>
 
-					<div className='variation-box'>
+					<div className='variation-box' key='others'>
 						<label>INNE</label>
 						<div className='two-columns'>
 							<div>Otwartość oczu</div>
-							<Numeric initialValue={this.state.eyes_openning} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({eyes_openning: v})} />
+							<Slider initialValue={this.state.eyes_openning} min={-1} max={1} onChange={v => this.setState({eyes_openning: v})} />
 							<div>Grubość warg</div>
-							<Numeric initialValue={this.state.lips_thickness} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({lips_thickness: v})} />
+							<Slider initialValue={this.state.lips_thickness} min={-1} max={1} onChange={v => this.setState({lips_thickness: v})} />
 							<div>Grubość szyji</div>
-							<Numeric initialValue={this.state.neck_thikness} loop={false} min={-1} max={1} step={0.1} onChange={v => this.setState({neck_thikness: v})} />
+							<Slider initialValue={this.state.neck_thikness} min={-1} max={1} onChange={v => this.setState({neck_thikness: v})} />
 						</div>
 					</div>
 				</>;
@@ -508,9 +531,9 @@ export default class Creator extends React.Component<any, CreatorState> {
 						max_index={HEAD_OVERLAYS['Moles/Freckles']} onChange={v => 
 							this.setState({moles_freckles: v})} />
 
-					<HeadOverlay key='chest_hair' label='WŁOSY NA KLACIE' initialValues={this.state.chest_hair} 
+					{/*<HeadOverlay key='chest_hair' label='WŁOSY NA KLACIE' initialValues={this.state.chest_hair} 
 						max_index={HEAD_OVERLAYS['Chest Hair']} onChange={v => 
-							this.setState({chest_hair: v})} />
+							this.setState({chest_hair: v})} />*/}
 
 					<HeadOverlay key='body_blemishes' label='SKAZY NA CIELE' initialValues={this.state.body_blemishes} 
 						max_index={HEAD_OVERLAYS['Body Blemishes']} onChange={v => 

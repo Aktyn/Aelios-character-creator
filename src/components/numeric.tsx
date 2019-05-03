@@ -29,12 +29,16 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 	}
 
 	private holdTimeouts: (number | null)[] = [null, null];
+	private mouse_not_pressed = false;
 
 	constructor(props: SmallNumericProps) {
 		super(props);
 		this.state.value = this.props.initialValue || 0;//).toString();
 		if(this.props.step < 0)
 			throw new Error('step must be positive');
+
+		window.addEventListener('mouseup', this.onMouseUp.bind(this), false);
+		window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
 	}
 
 	componentWillUnmount() {
@@ -42,6 +46,8 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 			if(this.holdTimeouts[i])
 				clearTimeout(this.holdTimeouts[i] as never);
 		}
+		window.removeEventListener('mouseup', this.onMouseUp.bind(this), false);
+		window.removeEventListener('mousedown', this.onMouseDown.bind(this), false);
 	}
 
 	componentWillUpdate(nothing: any, next_state: SmallNumericState) {
@@ -58,6 +64,13 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 		if(this.state.value !== next_state.value && this.props.onChange)
 			this.props.onChange(next_state.value);
 		//next_state.value = Math.max(this.props.min, Math.min(this.props.max, next_state.value));
+	}
+
+	private onMouseUp() {
+		this.mouse_not_pressed = true;
+	}
+	private onMouseDown() {
+		this.mouse_not_pressed = false;
 	}
 
 	public setValue(val: number) {
@@ -87,6 +100,8 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 		}
 		else {
 			this.holdTimeouts[dir] = setTimeout(() => {
+				if(this.mouse_not_pressed)
+					return;
 				if(dir === 0 && this.state.value <= this.props.min && !this.props.loop)
 					return;
 				if(dir === 1 && this.state.value >= this.props.max && !this.props.loop)
