@@ -67,6 +67,7 @@ interface CreatorState {
 
 	//variations
 	face_variation: VariationBoxValues;
+	skin_color: number;
 	head_variation: VariationBoxValues;
 	hair_variation: VariationBoxValues;
 	eyes_variation: VariationBoxValues;
@@ -156,6 +157,7 @@ export default class Creator extends React.Component<any, CreatorState> {
 
 		//variations
 		face_variation: 	{model_id: 0, texture_id: 0},
+		skin_color: 0,
 		head_variation: 	{model_id: 0, texture_id: 0},
 		hair_variation: 	{model_id: 0, texture_id: 0},
 		eyes_variation: 	{model_id: 0, texture_id: 0},
@@ -385,6 +387,19 @@ export default class Creator extends React.Component<any, CreatorState> {
 						this.setState({face_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
 						initialValues={this.state.face_variation} />
+
+					{/*<VariationBox key='skin_colorx' label={'KOLOR SKÓRY'} onChange={(values) => {
+						this.setState({skin_color: values});
+					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
+						initialValues={this.state.skin_color} />*/}
+
+					<div className='variation-box' key='skin_color' style={{gridTemplateColumns: '1fr'}}>
+						<label>KOLOR SKÓRY</label>
+						<div style={{alignSelf: 'center', margin: 'auto'}}>
+							<Numeric min={0} max={PED_VARIATIONS_DATA[PED_VARIATION_FACE].length-1}initialValue={this.state.skin_color} onChange={v =>
+								this.setState({skin_color: v})} />
+						</div>
+					</div>
 
 					<VariationBox key='head' label={'MASKA'} onChange={(values) => {
 						this.setState({head_variation: values});
