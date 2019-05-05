@@ -22,13 +22,6 @@ export default class Home extends React.Component<any, HomeState> {
 
 	constructor(props: any) {
 		super(props);
-
-		try {
-			alt.on('show_choicer', this._showChoicer.bind(this));
-		}
-		catch(e) {
-			//console.error(e);
-		}
 	}
 
 	componentDidMount() {
@@ -40,6 +33,36 @@ export default class Home extends React.Component<any, HomeState> {
 				gender: 'male'
 			}]);
 		}*/
+		try {
+			alt.on('show_choicer', (slots: number, props: AppearanceSchema[]) => {
+				let main_view = document.getElementById('main_view');
+				if(main_view)
+					main_view.style.display = 'block';
+				this._showChoicer(slots, props);
+			});
+			alt.on('toogle_display', (show: boolean) => {
+				let main_view = document.getElementById('main_view');
+				if(!main_view)
+					return;
+				if(show)
+					main_view.style.display = 'block';
+				else
+					main_view.style.display = 'none';
+			});
+
+			setTimeout(function() {
+				//console.log('view loaded');
+				try {
+					alt.emit('CC_viewLoaded');
+				}
+				catch(e) {
+					//console.error(e);
+				}
+			}, 100);
+		}
+		catch(e) {
+			//console.error(e);
+		}
 	}
 
 	_showChoicer(_slots: number, _props: AppearanceSchema[]) {
