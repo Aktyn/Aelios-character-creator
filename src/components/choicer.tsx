@@ -20,13 +20,6 @@ interface ChoicerState {
 	
 }
 
-/*function fixZero(input: string | number) {
-	input = input.toString();
-	if(input.length < 2)
-		input = '0' + input;
-	return input;
-}*/
-
 export default class Choicer extends React.Component<ChoicerProps, ChoicerState> {
 
 	state: ChoicerState = {}
@@ -36,20 +29,16 @@ export default class Choicer extends React.Component<ChoicerProps, ChoicerState>
 	}
 
 	makeChoice(index: number) {
-		//console.log('choice:', index);
 		try {
 			alt.emit('character_choice', index);
 		}
-		catch(e) {
-			//console.error(e);
-		}
+		catch(e) {}
 	}
 
 	render() {
 		const icon_font = {
 			fontSize: '50px', 
 			fontWeight: 'bold',
-			//textShadow: '0px 0px 2px #0004'
 		} as React.CSSProperties;
 
 		let choices: any = [];

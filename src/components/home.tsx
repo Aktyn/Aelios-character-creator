@@ -25,14 +25,6 @@ export default class Home extends React.Component<any, HomeState> {
 	}
 
 	componentDidMount() {
-		/*if(process.env.NODE_ENV === 'development') {
-			this._showChoicer(2, [{
-				birth_date: '14-02-1996',
-				firstname: 'Aktyn',
-				surname: 'Peonowski',
-				gender: 'male'
-			}]);
-		}*/
 		try {
 			alt.on('show_choicer', (slots: number, props: AppearanceSchema[]) => {
 				let main_view = document.getElementById('main_view');
@@ -51,18 +43,13 @@ export default class Home extends React.Component<any, HomeState> {
 			});
 
 			setTimeout(function() {
-				//console.log('view loaded');
 				try {
 					alt.emit('CC_viewLoaded');
 				}
-				catch(e) {
-					//console.error(e);
-				}
+				catch(e) {}
 			}, 100);
 		}
-		catch(e) {
-			//console.error(e);
-		}
+		catch(e) {}
 	}
 
 	_showChoicer(_slots: number, _props: AppearanceSchema[]) {

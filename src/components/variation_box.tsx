@@ -40,7 +40,6 @@ export default class VariationBox extends React.Component<VariationBoxProps, Var
 	}
 
 	componentWillUpdate(nothing: any, next_state: VariationBoxValues) {
-		//console.log( next_state );
 		if(this.state.model_id !== next_state.model_id || 
 			this.state.texture_id !== next_state.texture_id)
 		{
@@ -68,12 +67,6 @@ export default class VariationBox extends React.Component<VariationBoxProps, Var
 				}} min={0} max={texture_variations_count} disabled={!texture_variations_count}
 					ref={el => this.texture_numeric=el} />
 			</div>}
-			{/*<div>
-				<label>Paleta</label>
-				<SmallNumeric onChange={v => {
-					
-				}} min={0} max={3} />
-			</div>*/}
 		</div>;
 	}
 }

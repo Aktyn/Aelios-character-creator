@@ -60,9 +60,6 @@ interface CreatorState {
 	firstname: string;
 	surname: string;
 	gender: string;
-	//birth_day: string;//numeric strings
-	//birth_month: string;//numeric strings
-	//birth_year: string;//numeric strings
 	birth_date: string;
 
 	//variations
@@ -126,10 +123,6 @@ interface CreatorState {
 	body_blemishes: HeadOverlayValues,
 	add_body_blemishes: HeadOverlayValues,
 }
-
-/*function clampNumericString(str: string, min: number, max: number) {
-	return Math.max(min, Math.min(max, parseInt(str))).toString();
-}*/
 
 function initCap(str: string) {
 	return str.substr(0, 1).toUpperCase() + str.substr(1, str.length).toLowerCase();
@@ -232,14 +225,11 @@ export default class Creator extends React.Component<any, CreatorState> {
 			//@ts-ignore
 			if(this.state[key] !== next_state[key]) {
 				//@ts-ignore
-				//console.log(key, next_state[key]);
 				try {
 					//@ts-ignore
 					alt.emit('characterPropertyChanged', key, next_state[key]);
 				}
-				catch(e) {
-					//console.error(e);
-				}
+				catch(e) {}
 			}
 		}
 	}
@@ -278,13 +268,10 @@ export default class Creator extends React.Component<any, CreatorState> {
 		}
 		else {
 			//apply character creation
-			//console.log(this.state);
 			try {
 				alt.emit('confirmCharacterCreation', this.state);
 			}
-			catch(e) {
-				//console.error(e);
-			}
+			catch(e) {}
 		}
 	}
 
@@ -302,19 +289,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 					<input type='text' placeholder='Nazwisko postaci' value={this.state.surname}
 						onChange={e => this.setState({surname: initCap(e.target.value)})} required />
 					<label>Data urodzenia</label>
-					{/*<div className='one-liner' style={{
-						gridTemplateColumns: '1fr 1fr auto'
-					}}>
-						<input required type='number' placeholder='DZIEŃ' max={31} min={0} 
-							value={this.state.birth_day} 
-							onChange={e => this.setState({birth_day: clampNumericString(e.target.value, 0, 31)})} />
-						<input required type='number' placeholder='MIEŚ' max={12} min={0} 
-							value={this.state.birth_month} 
-							onChange={e => this.setState({birth_month: clampNumericString(e.target.value, 0, 12)})} />
-						<input required type='number' placeholder='ROK' max={3000} min={1} 
-							value={this.state.birth_year} 
-							onChange={e => this.setState({birth_year: clampNumericString(e.target.value, 1, 3000)})} />
-					</div>*/}
 					<label>Data urodzenia (DD-MM-RRRR)</label>
 					<div className='one-liner'>
 						<input type='text' maxLength={10} value={this.state.birth_date} onChange={e => {
@@ -359,8 +333,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 								str = joinDate(vals);
 							}
 
-							// e.target.value = str;
-
 							this.setState({birth_date: str});
 						}} style={{textAlign: 'center'}} required />
 					</div>
@@ -387,11 +359,6 @@ export default class Creator extends React.Component<any, CreatorState> {
 						this.setState({face_variation: values});
 					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
 						initialValues={this.state.face_variation} />
-
-					{/*<VariationBox key='skin_colorx' label={'KOLOR SKÓRY'} onChange={(values) => {
-						this.setState({skin_color: values});
-					}} variations_data={PED_VARIATIONS_DATA[PED_VARIATION_FACE]} 
-						initialValues={this.state.skin_color} />*/}
 
 					<div className='variation-box' key='skin_color' style={{gridTemplateColumns: '1fr'}}>
 						<label>KOLOR SKÓRY</label>
@@ -546,17 +513,10 @@ export default class Creator extends React.Component<any, CreatorState> {
 						max_index={HEAD_OVERLAYS['Moles/Freckles']} onChange={v => 
 							this.setState({moles_freckles: v})} />
 
-					{/*<HeadOverlay key='chest_hair' label='WŁOSY NA KLACIE' initialValues={this.state.chest_hair} 
-						max_index={HEAD_OVERLAYS['Chest Hair']} onChange={v => 
-							this.setState({chest_hair: v})} />*/}
-
 					<HeadOverlay key='body_blemishes' label='SKAZY NA CIELE' initialValues={this.state.body_blemishes} 
 						max_index={HEAD_OVERLAYS['Body Blemishes']} onChange={v => 
 							this.setState({body_blemishes: v})} />
 
-					{/*<HeadOverlay key='add_body_blemishes' label='DODATKOWE SKAZY NA CIELE' initialValues={this.state.add_body_blemishes} 
-						max_index={HEAD_OVERLAYS['Add Body Blemishes']} onChange={v => 
-							this.setState({add_body_blemishes: v})} />*/}
 				</>;
 			case CATEGORIES[4]:
 				return <>

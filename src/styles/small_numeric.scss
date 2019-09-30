@@ -9,7 +9,6 @@
 	grid-template-columns: $size auto $size;
 	grid-column-gap: 0px;
 	align-items: stretch;
-	// justify-content: space-between;
 	justify-items: stretch;
 
 	border-radius: $size;
@@ -21,7 +20,6 @@
 	}
 
 	span, input[type='number'] {
-		// margin: 0px 3px;
 		padding: 0px;
 		margin: 0px;
 		text-align: center;

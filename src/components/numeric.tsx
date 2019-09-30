@@ -33,7 +33,7 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 
 	constructor(props: SmallNumericProps) {
 		super(props);
-		this.state.value = this.props.initialValue || 0;//).toString();
+		this.state.value = this.props.initialValue || 0;
 		if(this.props.step < 0)
 			throw new Error('step must be positive');
 
@@ -63,7 +63,6 @@ export default class SmallNumeric extends React.Component<SmallNumericProps, Sma
 
 		if(this.state.value !== next_state.value && this.props.onChange)
 			this.props.onChange(next_state.value);
-		//next_state.value = Math.max(this.props.min, Math.min(this.props.max, next_state.value));
 	}
 
 	private onMouseUp() {

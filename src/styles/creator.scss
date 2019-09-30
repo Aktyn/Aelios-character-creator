@@ -3,14 +3,12 @@
 	top: 0px;
 	right: 0px;
 	padding: 0px;
-	// background-color: #004D40a0;
 
 	display: inline-grid;
 	grid-template-areas: "options navigation" "options apply";
 	grid-template-columns: auto fit-content(100%);
 	grid-template-rows: fit-content(100%) 1fr;
     align-items: start;
-	//grid-column-gap: 20px;
 
 	& > nav {
 		grid-area: navigation;
@@ -113,7 +111,6 @@
 			margin: 5px 0px;
 			margin-left: auto;
 			margin-right: auto;
-			// text-align: center;
 		}
 
 		button {
@@ -125,12 +122,8 @@
 			min-width: 65px;
 
 			&:not(:valid) {
-				// background-color: #e58a8a80;
 				border-color: #ef5350;
 			}
-			// border-top: 1px solid #006064;
-			// border-bottom: 1px solid #006064;
-			// border-radius: 0px;
 		}
 
 		.one-liner {
@@ -141,9 +134,6 @@
 
 			input {
 				border-radius: 0px;
-			}
-			button {
-				// width: 100%;
 			}
 		}
 
@@ -169,7 +159,7 @@
 		grid-area: apply;
 		width: 110px;
 		height: 50px;
-		// line-height: 50px;
+		
 		margin: auto;
 		margin-top: 10px;
 		align-self: start;
@@ -218,8 +208,6 @@
 		& > *:nth-child(odd) {
 			justify-self: left;
 		}
-		//flex-direction: row;
-		//flex-wrap: wrap;
 
 		&::before {
 			content: "";
@@ -270,7 +258,6 @@
 		}
 
 		& > :not(label) {
-			// background-color: red;
 			& > * {
 				display: block;
 				width: 80px;
@@ -289,8 +276,6 @@
 		display: grid !important;
 		width: 242px;
 		align-items: center;
-		// justify-content: stretch;
-		// justify-items: stretch;
 		grid-template-columns: auto fit-content(100%);
 		grid-template-rows: min-content;
 		grid-column-gap: 5px;
@@ -299,9 +284,6 @@
 		& > *:nth-child(odd) {
 			text-align: right;
 			width: max-content;
-		}
-		& > *:nth-child(even){
-			// justify-self: left;
 		}
 		& > * {
 			margin: 0px;

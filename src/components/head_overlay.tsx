@@ -40,7 +40,6 @@ export default class HeadOverlay extends React.Component<HeadOverlayProps, HeadO
 	}
 
 	componentWillUpdate(nothing: any, next_state: HeadOverlayValues) {
-		//console.log( next_state );
 		if(this.state.index !== next_state.index || this.state.opacity !== next_state.opacity ||
 			this.state.color1 !== next_state.color1 || this.state.color2 !== next_state.color2)
 		{
